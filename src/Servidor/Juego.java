@@ -1,38 +1,34 @@
-import java.io.*;
-import java.net.InetSocketAddress;
+package Servidor;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class ServidorPPT {
+public class Juego implements Runnable {
 
-    private static final int puerto = 3008;
+    private Thread hilo;
+    private static int numCliente = 0;
+    private Socket socketAlCliente;
     private ArrayList<Byte> opciones;
 
-    public void iniciarServer() throws IOException {
-        InetSocketAddress direccion = new InetSocketAddress(puerto);
+    public Juego(Socket socketAlCliente) {
+        numCliente++;
+        hilo = new Thread(this, "Cliente: " + numCliente);
+        this.socketAlCliente = socketAlCliente;
+        hilo.start();
+    }
 
+    @Override
+    public void run() {
 
-        try (ServerSocket serverSocket = new ServerSocket()) {
-            serverSocket.bind(direccion);
-            System.out.println("Servidor iniciado");
-
-            while (true) {
-                conexionCliente(serverSocket);
-            }
-        }
     }
 
     public void conexionCliente(ServerSocket serverSocket) throws IOException {
         try (Socket socketCliente = serverSocket.accept()) {
-            System.out.println("Cliente conectado");
-            Hilos h1 = new Hilos(serverSocket);
-            h1.run();
 
-            try (Socket socketCliente1 = serverSocket.accept()){
-                Hilos h2 = new Hilos(serverSocket);
-                h2.run();
-            }
         }
     }
 
