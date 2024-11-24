@@ -9,7 +9,8 @@ import java.util.ArrayList;
 public class Server {
 
     private static final int puerto = 3008;
-    static ArrayList<Socket> sockets = new ArrayList<>();
+    private static ArrayList<Jugador> jugadores = new ArrayList<>();
+    private static ArrayList<Juego> partidas = new ArrayList<>();
 
     public static void main(String[] args) {
         System.out.println("Servidor iniciado");
@@ -22,18 +23,19 @@ public class Server {
             System.out.println("SERVIDOR: Esperando peticion por el puerto " + puerto);
 
             while (true) {
-                //Por cada peticion de cliente aceptada se me crea un objeto socket diferente
+
                 Socket socketAlCliente = servidor.accept();
                 System.out.println("SERVIDOR: peticion numero " + ++peticion + " recibida");
-                //Abrimos un hilo nuevo y liberamos el hilo principal para que pueda
-                //recibir peticiones de otros clientes
-                new Jugador(socketAlCliente);
+
+                Jugador jugador = new Jugador(socketAlCliente);
+                jugadores.add(jugador);
 
                 if (peticion%2 == 0) {
-                    sockets.add(socketAlCliente);
-                    new Juego((sockets.get(sockets.size() - 2)) , sockets.getLast());
+                    System.out.println("Iniciando partida");
+                    partidas.add(new Juego(jugadores.get(jugadores.size() - 2), jugadores.getLast()));
+                    partidas.getLast().run();
                 } else {
-                    sockets.add(socketAlCliente);
+                    System.out.println("Buscando un segundo jugador");
                 }
             }
         } catch (IOException e) {
