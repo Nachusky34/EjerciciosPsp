@@ -6,7 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class Server {
+public class ServerPPT {
 
     private static final int puerto = 3008;
     private static ArrayList<Jugador> jugadores = new ArrayList<>();

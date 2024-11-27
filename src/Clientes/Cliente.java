@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Cliente {
 
-    public static final int puerto = 3008;
+    public static final int puerto = 3009;
     public static final String IP_SERVER = "localhost";
     //10.34.121.251
 
